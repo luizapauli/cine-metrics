@@ -26,7 +26,7 @@ The system operates in 3 logical stages:
     * The system calculates the frequency of watched genres vs. user satisfaction.
 
 ## 📌 Roadmap
-- [ ] Implement basic API connection (TV Show Search)
+- [x] Implement basic API connection (TV Show Search)
 - [ ] Create Database Schema (Users & Genres Tables)
 - [ ] Develop the weighting algorithm logic
 - [ ] Create data visualization (Preference Charts)
