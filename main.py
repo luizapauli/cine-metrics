@@ -1,12 +1,16 @@
 from services.tmdb_client import TMDBClient
+from services.database import DatabaseClient
 
 def main():
-    # 1. Instance client (loads the API by itself)
+    # 1. Instance client and database (loads the API by itself)
     try:
         client = TMDBClient()
+        db_cliente = DatabaseClient()
     except ValueError as e:
         print(e)
         return
+    
+    db_cliente.init_db()
 
     print("--- CineMetrics: Connection Test ---")
     
@@ -20,6 +24,7 @@ def main():
 
     # 4. Shows result
     if result:
+        db_cliente.add_series(result)
         print(f"\n✅ SUCCESS! Series found:")
         print(f"Original Name: {result['original_name']}")
         print(f"ID: {result['id']}")
