@@ -1,0 +1,14 @@
+# 1. Security)
+.env
+
+# 2. Virtual Enviroment (Heavy bib)
+venv/
+env/
+
+# 3. Bytecode Python (Trash compilation)
+__pycache__/
+*.py[cod]
+
+# 4. OS Archives
+# .DS_Store (Use it if you have MacOS)
+Thumbs.db
