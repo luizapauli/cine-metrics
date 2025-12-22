@@ -39,8 +39,8 @@ The system operates in 3 logical stages:
 ```mermaid
 erDiagram
     SERIES {
-        int id PK "TMDB's ID"
-        string name "Series Name"
-        string overview "Synopsis"
+        text id PK "TMDB's ID"
+        text name "Series Name"
+        text overview "Synopsis"
         float vote_average "Average Rating"
     }
