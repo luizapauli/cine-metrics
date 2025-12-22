@@ -33,3 +33,14 @@ The system operates in 3 logical stages:
 
 ---
 *This project is part of my Computer Science portfolio.*
+
+## 🗄️ Modeling DB
+
+```mermaid
+erDiagram
+    SERIES {
+        int id PK "TMDB's ID"
+        string name "Series Name"
+        string overview "Synopsis"
+        float vote_average "Average Rating"
+    }
