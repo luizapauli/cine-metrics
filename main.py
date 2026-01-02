@@ -83,12 +83,14 @@ def main():
                 print("--- S | T | A | T | I | S | T | I | C | S ---\n")
                 print("------------------------------------------------\n")
 
-                avg_rating = db_client
-                if avg_rating := db_client.get_average_rating():
+                avg_rating = db_client.get_average_rating()
+                total_series = db_client.get_total_series()
+                if avg_rating:
                     print(f"⭐ Average rating of all series: {avg_rating:.2f}")
                 else:
                     print("No series found in the database.")
-                
+
+                print(f"📊 Total series in collection: {total_series}")
             case _:
                 print("Invalid option. Please try again.\n")
                 continue

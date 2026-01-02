@@ -58,3 +58,9 @@ class DatabaseClient:
 
         cursor.execute("SELECT AVG(vote_average) FROM SERIES")
         return cursor.fetchone()[0]
+    
+    def get_total_series(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("SELECT COUNT(*) FROM SERIES")
+        return cursor.fetchone()[0]
