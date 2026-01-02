@@ -35,3 +35,11 @@ class DatabaseClient:
 
         self.conn.commit()
         print(f"Series '{series_data['name']}' saved/updated in database")
+
+    def get_all_series(self):
+        """
+        Busca todas as séries salvas no banco e retorna uma lista de tuplas.
+        """
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT name, vote_average FROM SERIES")
+        return cursor.fetchall()
