@@ -1,6 +1,21 @@
 from services.tmdb_client import TMDBClient
 from services.database import DatabaseClient
 
+def menu():
+
+    print("\n--- C | I | N | E  ||  M | E | T | R | I | C | S ---")
+    print("----------------------------------------------------\n")
+    print("1 - Insert new series\n")
+    print("2 - View all series saved\n")
+    print("0 - Exit\n")
+
+    choice = input("Choose an option: ")
+    try:
+        return int(choice)
+    except ValueError:
+        return -1
+
+
 def main():
     # 1. Instance client and database (loads the API by itself)
     try:
@@ -12,6 +27,46 @@ def main():
     
     db_cliente.init_db()
 
+    op = None
+    while op != 0:
+        op = menu()
+        match op:
+            case 1:
+                # 1. User input
+                name_series = input("Type a series name: ")
+
+                print(f"\n🔎 Searching for '{name_series}' in TMDB...")
+                
+                # 2. Calls the method
+                result = client.search_tv_show(name_series)
+
+                # 3. Shows result
+                if result:
+                    db_cliente.add_series(result)
+                    print(f"\n✅ SUCCESS! Series found:")
+                    print(f"Original Name: {result['original_name']}")
+                    print(f"ID: {result['id']}")
+                    print(f"Average rating: {result['vote_average']}")
+                    print("-" * 30)
+                    print(f"Synopsis: {result['overview']}")
+                else:
+                    print("\n❌ Series not found (or connection error).")
+
+            case 2:
+                print("--- M | Y  ||  C | O | L | L | E | C | T | I | O | N ---\n")
+                print("--------------------------------------------------------\n")
+
+                series = db_cliente.get_all_series()
+                for s in series:
+                    print(f"📺 {s[0]} - Average rating: {s[1]}")
+            case 0:
+                print("Exiting...")
+                break
+            case _:
+                print("Invalid option. Please try again.\n")
+                continue
+
+"""
     print("--- CineMetrics: Connection Test ---")
     
     # 2. User input
@@ -33,6 +88,8 @@ def main():
         print(f"Synopsis: {result['overview']}")
     else:
         print("\n❌ Series not found (or connection error).")
+
+"""
 
 if __name__ == "__main__":
     main()
