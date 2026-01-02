@@ -41,14 +41,20 @@ class DatabaseClient:
         Busca todas as séries salvas no banco e retorna uma lista de tuplas.
         """
         cursor = self.conn.cursor()
-        cursor.execute("SELECT name, vote_average FROM SERIES")
+        cursor.execute("SELECT id, name, vote_average FROM SERIES")
         return cursor.fetchall()
 
     def delete_series(self, series_id):
-        cursor = self.conn,cursor()
+        cursor = self.conn.cursor()
 
         delete_sql = "DELETE FROM SERIES WHERE ID = ?"
 
         cursor.execute(delete_sql, (series_id,))
         self.conn.commit()
         print(f"Series with ID {series_id} deleted from database")
+
+    def get_average_rating(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("SELECT AVG(vote_average) FROM SERIES")
+        return cursor.fetchone()[0]

@@ -8,6 +8,7 @@ def menu():
     print("1 - Insert new series\n")
     print("2 - View all series saved\n")
     print("3 - Delete a series\n")
+    print("4 - View statistics\n")
     print("0 - Exit\n")
 
     choice = input("Choose an option: ")
@@ -21,17 +22,20 @@ def main():
     # 1. Instance client and database (loads the API by itself)
     try:
         client = TMDBClient()
-        db_cliente = DatabaseClient()
+        db_client = DatabaseClient()
     except ValueError as e:
         print(e)
         return
     
-    db_cliente.init_db()
+    db_client.init_db()
 
     op = None
     while op != 0:
         op = menu()
         match op:
+            case 0:
+                print("Exiting...")
+                break
             case 1:
                 # 1. User input
                 name_series = input("Type a series name: ")
@@ -43,7 +47,7 @@ def main():
 
                 # 3. Shows result
                 if result:
-                    db_cliente.add_series(result)
+                    db_client.add_series(result)
                     print(f"\n✅ SUCCESS! Series found:")
                     print(f"Original Name: {result['original_name']}")
                     print(f"ID: {result['id']}")
@@ -57,7 +61,7 @@ def main():
                 print("--- M | Y  ||  C | O | L | L | E | C | T | I | O | N ---\n")
                 print("--------------------------------------------------------\n")
 
-                series = db_cliente.get_all_series()
+                series = db_client.get_all_series()
                 for s in series:
                     print(f"📺 {s[1]} - Average rating: {s[2]}")
             
@@ -65,19 +69,26 @@ def main():
                 print("--- D | E | L | E | T | E  ||  S | E | R | I | E | S ---\n")
                 print("--------------------------------------------------------\n")
 
-                series = db_cliente.get_all_series()
+                series = db_client.get_all_series()
                 for s in series:
                     print(f"{s[0]} 📺 {s[1]} - Average rating: {s[2]}")
 
                 try:
                     series_id = int(input("\nType the ID of the series to delete: "))
-                    db_cliente.delete_series(series_id)
+                    db_client.delete_series(series_id)
                 except ValueError:
                     print("Invalid ID.")
 
-            case 0:
-                print("Exiting...")
-                break
+            case 4:
+                print("--- S | T | A | T | I | S | T | I | C | S ---\n")
+                print("------------------------------------------------\n")
+
+                avg_rating = db_client
+                if avg_rating := db_client.get_average_rating():
+                    print(f"⭐ Average rating of all series: {avg_rating:.2f}")
+                else:
+                    print("No series found in the database.")
+                
             case _:
                 print("Invalid option. Please try again.\n")
                 continue
@@ -95,7 +106,7 @@ def main():
 
     # 4. Shows result
     if result:
-        db_cliente.add_series(result)
+        db_client.add_series(result)
         print(f"\n✅ SUCCESS! Series found:")
         print(f"Original Name: {result['original_name']}")
         print(f"ID: {result['id']}")
