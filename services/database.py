@@ -43,3 +43,12 @@ class DatabaseClient:
         cursor = self.conn.cursor()
         cursor.execute("SELECT name, vote_average FROM SERIES")
         return cursor.fetchall()
+
+    def delete_series(self, series_id):
+        cursor = self.conn,cursor()
+
+        delete_sql = "DELETE FROM SERIES WHERE ID = ?"
+
+        cursor.execute(delete_sql, (series_id,))
+        self.conn.commit()
+        print(f"Series with ID {series_id} deleted from database")

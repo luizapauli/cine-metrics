@@ -7,6 +7,7 @@ def menu():
     print("----------------------------------------------------\n")
     print("1 - Insert new series\n")
     print("2 - View all series saved\n")
+    print("3 - Delete a series\n")
     print("0 - Exit\n")
 
     choice = input("Choose an option: ")
@@ -58,7 +59,22 @@ def main():
 
                 series = db_cliente.get_all_series()
                 for s in series:
-                    print(f"📺 {s[0]} - Average rating: {s[1]}")
+                    print(f"📺 {s[1]} - Average rating: {s[2]}")
+            
+            case 3:
+                print("--- D | E | L | E | T | E  ||  S | E | R | I | E | S ---\n")
+                print("--------------------------------------------------------\n")
+
+                series = db_cliente.get_all_series()
+                for s in series:
+                    print(f"{s[0]} 📺 {s[1]} - Average rating: {s[2]}")
+
+                try:
+                    series_id = int(input("\nType the ID of the series to delete: "))
+                    db_cliente.delete_series(series_id)
+                except ValueError:
+                    print("Invalid ID.")
+
             case 0:
                 print("Exiting...")
                 break
