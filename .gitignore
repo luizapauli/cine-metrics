@@ -11,7 +11,7 @@ __pycache__/
 
 # 4. OS Archives
 # .DS_Store (Use it if you have MacOS)
-Thumbs.db
+Thumbs.db 
 
 # 5. SQLite databases
 *.db
