@@ -10,7 +10,7 @@ class DatabaseClient:
         #TABLE SERIES
         create_table_SQL = """
         CREATE TABLE IF NOT EXISTS SERIES(
-            ID INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             synopsis TEXT,
             vote_average REAL
@@ -22,7 +22,7 @@ class DatabaseClient:
         #TABLE GENRES
         create_table_SQL = """
         CREATE TABLE IF NOT EXISTS GENRES(
-        ID INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         name TEXT NOT NULL
         );
         """
@@ -119,4 +119,9 @@ class DatabaseClient:
         cursor = self.conn.cursor()
 
         cursor.execute("SELECT name, vote_average FROM SERIES WHERE vote_average = (SELECT MIN(vote_average) FROM SERIES)")
+        return cursor.fetchall()
+    
+    def get_genres(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT id, name FROM GENRES")
         return cursor.fetchall()
