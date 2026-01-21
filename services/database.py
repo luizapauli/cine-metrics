@@ -7,6 +7,7 @@ class DatabaseClient:
     def init_db(self):
         cursor = self.conn.cursor()
 
+        #TABLE SERIES
         create_table_SQL = """
         CREATE TABLE IF NOT EXISTS SERIES(
             ID INTEGER PRIMARY KEY,
@@ -17,7 +18,50 @@ class DatabaseClient:
         """
         cursor.execute(create_table_SQL)
         self.conn.commit()
-        print("Database initiated successfully")
+
+        #TABLE GENRES
+        create_table_SQL = """
+        CREATE TABLE IF NOT EXISTS GENRES(
+        ID INTEGER PRIMARY KEY,
+        name TEXT NOT NULL
+        );
+        """
+        cursor.execute(create_table_SQL)
+        self.conn.commit()
+
+        #TABLE SERIES_GENRES
+        create_table_SQL = """
+        CREATE TABLE IF NOT EXISTS SERIES_GENRES(
+        id_series INTEGER NOT NULL,
+        id_genre INTEGER NOT NULL,
+        PRIMARY KEY(id_series, id_genre),
+        FOREIGN KEY(id_series) REFERENCES SERIES(ID),
+        FOREIGN KEY(id_genre) REFERENCES GENRES(ID)
+        );
+        """
+        cursor.execute(create_table_SQL)
+        self.conn.commit()
+
+        #POPULATING GENRES TABLE
+        populate_sql ="""
+        INSERT OR IGNORE INTO GENRES (name) VALUES
+        ('Action & Adventure'),
+        ('Animation'),
+        ('Comedy'),
+        ('Crime'),
+        ('Horror')
+        ('Documentary'),
+        ('Drama'),
+        ('Family'),
+        ('Kids'),
+        ('Mystery'),
+        ('News'),
+        ('Reality'),
+        ('Sci-Fi & Fantasy');
+
+        """
+
+        print("Database initiated and genres populated successfully")
 
     def add_series(self, series_data):
         cursor = self.conn.cursor()
