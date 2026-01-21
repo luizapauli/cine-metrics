@@ -83,14 +83,26 @@ def main():
                 print("--- S | T | A | T | I | S | T | I | C | S ---\n")
                 print("------------------------------------------------\n")
 
-                avg_rating = db_client.get_average_rating()
                 total_series = db_client.get_total_series()
-                if avg_rating:
-                    print(f"⭐ Average rating of all series: {avg_rating:.2f}")
-                else:
-                    print("No series found in the database.")
-
                 print(f"📊 Total series in collection: {total_series}")
+
+                if total_series == 0:
+                    print(f"No statistics available. Add some series first.")
+                else:
+                    avg_rating = db_client.get_average_rating()
+                    print(f"⭐ Average rating of all series: {avg_rating:.2f}")
+
+                    top_series = db_client.get_top_series()
+                    print("\n🏆 Top rated series:")
+                    for s in top_series:
+                        print(f"📺 {s[0]} - Rating: {s[1]}")
+
+                    lowest_series = db_client.get_lowest_series()
+                    print("\n🔻 Lowest rated series:")
+                    for s in lowest_series:
+                        print(f"📺 {s[0]} - Rating: {s[1]}")
+
+
             case _:
                 print("Invalid option. Please try again.\n")
                 continue

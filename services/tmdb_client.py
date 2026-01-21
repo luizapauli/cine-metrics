@@ -32,7 +32,7 @@ class TMDBClient:
             data = response.json()
 
             if data['results']:
-                return data['results'][0] ##First index (0) is the most relevant
+                return data['results'][0] #First index (0) is the most relevant
             return None
         except requests.exceptions.RequestException as e:
             print(f"Error on API conection: {e}")

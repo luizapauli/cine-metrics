@@ -64,3 +64,15 @@ class DatabaseClient:
 
         cursor.execute("SELECT COUNT(*) FROM SERIES")
         return cursor.fetchone()[0]
+    
+    def get_top_series(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("SELECT name, vote_average FROM SERIES WHERE vote_average = (SELECT MAX(vote_average) FROM SERIES)")
+        return cursor.fetchall()
+    
+    def get_lowest_series(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("SELECT name, vote_average FROM SERIES WHERE vote_average = (SELECT MIN(vote_average) FROM SERIES)")
+        return cursor.fetchall()
