@@ -17,6 +17,12 @@ def menu():
     except ValueError:
         return -1
 
+def choose_genres(genres):
+    print("\nGenres available")
+    for g in genres:
+        print(f"{g[0]} - {g[1]}")
+    input_genres = input("Type the IDs of the genres separated by commas (e.g., 1,3,5): ")
+    return input_genres
 
 def main():
     # 1. Instance client and database (loads the API by itself)
@@ -54,6 +60,20 @@ def main():
                     print(f"Average rating: {result['vote_average']}")
                     print("-" * 30)
                     print(f"Synopsis: {result['overview']}")
+
+                    genres = db_client.get_genres()
+                    input_genres = choose_genres(genres)
+
+                    if input_genres:
+                        for g in input_genres.split(','):
+                            try:
+                                genre_id = int(g.strip())
+                                series_id = result['id']
+                                db_client.insert_series_genre(series_id, genre_id)
+                            except (ValueError, Exception):
+                                print(f"Invalid genre selection: {g}")
+                    print(f"\n✅ Series '{result['original_name']}' added successfully with genres!")
+                    
                 else:
                     print("\n❌ Series not found (or connection error).")
 

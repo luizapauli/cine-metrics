@@ -3,6 +3,7 @@ import sqlite3;
 class DatabaseClient:
     def __init__(self):
         self.conn = sqlite3.connect("cine_metrics.db")
+        self.init_db()
 
     def init_db(self):
         cursor = self.conn.cursor()
@@ -23,7 +24,7 @@ class DatabaseClient:
         create_table_SQL = """
         CREATE TABLE IF NOT EXISTS GENRES(
         id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL
+        name TEXT NOT NULL UNIQUE
         );
         """
         cursor.execute(create_table_SQL)
@@ -49,7 +50,7 @@ class DatabaseClient:
         ('Animation'),
         ('Comedy'),
         ('Crime'),
-        ('Horror')
+        ('Horror'),
         ('Documentary'),
         ('Drama'),
         ('Family'),
@@ -57,10 +58,11 @@ class DatabaseClient:
         ('Mystery'),
         ('News'),
         ('Reality'),
-        ('Sci-Fi & Fantasy');
-
+        ('Sci-Fi & Fantasy'),
+        ('Medical');
         """
-
+        cursor.execute(populate_sql)
+        self.conn.commit()
         print("Database initiated and genres populated successfully")
 
     def add_series(self, series_data):
@@ -125,3 +127,17 @@ class DatabaseClient:
         cursor = self.conn.cursor()
         cursor.execute("SELECT id, name FROM GENRES")
         return cursor.fetchall()
+
+    def insert_series_genre(self, series_id, genre_id):
+        cursor = self.conn.cursor()
+
+        insert_sql = """
+        INSERT OR IGNORE INTO SERIES_GENRES (id_series, id_genre)
+        VALUES (?, ?)
+        """
+        try:
+            cursor.execute(insert_sql, (series_id, genre_id))
+            self.conn.commit()
+            print(f"Genre ID {genre_id} associated with Series ID {series_id}")
+        except sqlite3.IntegrityError:
+            print(f"Error: Genre ID {genre_id} or Series ID {series_id} not found, or relationship already exists.")
